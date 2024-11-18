@@ -1,28 +1,28 @@
-import {ICanvasTable} from "../typings/CanvasTable";
-import {treeGetDeep, treeGetLeaf} from "../utils/tree";
-import {isEmpty} from "../utils/utils";
-import LayerText from "../component/Text";
-import Layer from "../component/Layer";
-import {drawLine} from "../utils/draw";
+import { ICanvasTable } from '../typings/CanvasTable'
+import { treeGetDeep, treeGetLeaf } from '../utils/tree'
+import { isEmpty } from '../utils/utils'
+import LayerText from '../component/Text'
+import Layer from '../component/Layer'
+import { drawLine } from '../utils/draw'
 
-type IHeaderNodeProps = ICanvasTable.IHeaderNodeProps;
+type IHeaderNodeProps = ICanvasTable.IHeaderNodeProps
 
 class HeaderTreeNode extends LayerText {
   constructor(protected props: IHeaderNodeProps) {
-    super(props);
-    this.style.backgroundColor = this.table.style.headerBackColor;
-    this.style.fontWeight = 'bold';
+    super(props)
+    this.style.backgroundColor = this.table.style.headerBackColor
+    this.style.fontWeight = 'bold'
 
-    this.parentCell = props.parent;
+    this.parentCell = props.parent
 
-    // 把自身添加到父元素的children中
+    // Add itself to the children of the parent element
     if (this.parentCell) {
       this.parentCell.childrenCell.push(this)
     }
   }
 
-  parentCell: HeaderTreeNode = null;
-  childrenCell: HeaderTreeNode[] = [];
+  parentCell: HeaderTreeNode = null
+  childrenCell: HeaderTreeNode[] = []
 
   get table() {
     return this.props.table
@@ -36,20 +36,22 @@ class HeaderTreeNode extends LayerText {
     return this.props.colProps.fixed
   }
 
-  private _width = null;
+  private _width = null
   get width() {
     if (this._width === null) {
-      this._width = treeGetLeaf(this, 'childrenCell')
-        .reduce((pre, curr) => pre + (curr.props.colProps.width || this.table.style.columnWidth), 0)
+      this._width = treeGetLeaf(this, 'childrenCell').reduce(
+        (pre, curr) => pre + (curr.props.colProps.width || this.table.style.columnWidth),
+        0
+      )
     }
     return this._width
   }
 
-  private _height: number = null;
+  private _height: number = null
   get height() {
     if (this._height === null) {
       if (isEmpty(this.childrenCell)) {
-        let space = this.table.header.deep - (this.treeHeight - 1 + treeGetDeep(this.props.colProps) - 1);
+        let space = this.table.header.deep - (this.treeHeight - 1 + treeGetDeep(this.props.colProps) - 1)
         this._height = space * this.table.style.headerRowHeight
       } else {
         this._height = this.table.style.headerRowHeight
@@ -58,16 +60,16 @@ class HeaderTreeNode extends LayerText {
     return this._height
   }
 
-  private _left: number = null;
+  private _left: number = null
   get left() {
     if (this._left === null) {
-      let left = 0;
-      const siblings = this.siblings;
+      let left = 0
+      const siblings = this.siblings
       if (isEmpty(this.parentCell)) {
         switch (this.fixed) {
           case 'left':
             for (let i = 0, cell: HeaderTreeNode = null; i < siblings.length; i++) {
-              cell = siblings[i];
+              cell = siblings[i]
               if (cell.fixed !== 'left') {
                 break
               }
@@ -76,50 +78,50 @@ class HeaderTreeNode extends LayerText {
               }
               left += cell.width
             }
-            break;
+            break
           case 'right':
             for (let i = siblings.length - 1, cell: HeaderTreeNode = null; i >= 0; i--) {
-              cell = siblings[i];
+              cell = siblings[i]
               if (cell.fixed !== 'right') {
                 break
               }
-              left += cell.width;
+              left += cell.width
               if (cell === this) {
                 break
               }
             }
-            left = this.table.style.width - left;
-            break;
+            left = this.table.style.width - left
+            break
           default:
             for (let i = 0, cell: HeaderTreeNode = null; i < siblings.length; i++) {
-              cell = siblings[i];
+              cell = siblings[i]
               if (cell === this) {
                 break
               }
-              left += cell.width;
+              left += cell.width
             }
         }
       } else {
         for (let i = 0, cell: HeaderTreeNode = null; i < siblings.length; i++) {
-          cell = siblings[i];
+          cell = siblings[i]
           if (cell === this) {
             break
           }
-          left += cell.width;
+          left += cell.width
         }
         left += this.parentCell.left
       }
 
-      this._left = left;
+      this._left = left
     }
 
     if (this.fixed !== 'left' && this.fixed !== 'right') {
-      return this._left - this.table.scroller.left;
+      return this._left - this.table.scroller.left
     }
     return this._left
   }
 
-  private _top: number = null;
+  private _top: number = null
   get top() {
     if (this._top === null) {
       this._top = (this.treeHeight - 1) * this.table.style.headerRowHeight - 1
@@ -133,31 +135,31 @@ class HeaderTreeNode extends LayerText {
   //   return vertical && horizontal
   // }
 
-  get align () {
+  get align() {
     return this.props.colProps.align || (isEmpty(this.props.colProps.children) ? 'left' : 'center')
   }
 
-  get text () {
+  get text() {
     return this.props.colProps.title + ''
   }
 
-  // 获取树的高度
-  get treeHeight () {
-    // 获取当前节点深度
-    let height = 0;
-    let current:HeaderTreeNode = this;
+  // Get the height of the tree
+  get treeHeight() {
+    // Get the current node depth
+    let height = 0
+    let current: HeaderTreeNode = this
     while (current) {
-      height ++;
-      // 防止死循环
+      height++
+      // Preventing Infinite Loops
       if (height > 10000) {
         return 10000
       }
       current = current.parentCell
     }
-    return height;
+    return height
   }
 
-  get siblings () {
+  get siblings() {
     if (this.parentCell) {
       return [...this.parentCell.childrenCell]
     } else {
@@ -166,13 +168,13 @@ class HeaderTreeNode extends LayerText {
   }
 
   borderRect() {
-    const {left, top, width, height} = this;
+    const { left, top, width, height } = this
     // border-bottom
-    const borderTop = top + height;
-    drawLine(this.ctx, left, borderTop, left + width, borderTop);
+    const borderTop = top + height
+    drawLine(this.ctx, left, borderTop, left + width, borderTop)
     // border-right
-    if(this.header.deep > 1) {
-      drawLine(this.ctx,left + width - 1, top - 1, left + width - 1, top + height - 1);
+    if (this.header.deep > 1) {
+      drawLine(this.ctx, left + width - 1, top - 1, left + width - 1, top + height - 1)
     }
   }
 
@@ -180,28 +182,27 @@ class HeaderTreeNode extends LayerText {
     return this.fixed === 'left' || this.fixed === 'right' ? 1 : 0
   }
 
-  customRendered: Layer = null;
-  render () {
-    if(!this.isRender){
+  customRendered: Layer = null
+  render() {
+    if (!this.isRender) {
       return
     }
 
-    this.borderRect();
+    this.borderRect()
     if (typeof this.props.colProps.title === 'function') {
       if (this.customRendered === null) {
-        this.customRendered = this.props.colProps.title();
+        this.customRendered = this.props.colProps.title()
         if (this.customRendered instanceof Layer) {
-          this.customRendered.parent = this;
-          this.children = [this.customRendered];
+          this.customRendered.parent = this
+          this.children = [this.customRendered]
         }
       }
 
       if (typeof this.customRendered === 'string') {
-        super.render(this.customRendered);
+        super.render(this.customRendered)
       }
-
     } else {
-      super.render();
+      super.render()
     }
   }
 }

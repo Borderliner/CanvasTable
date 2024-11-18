@@ -1,11 +1,11 @@
-import Layer from "./Layer";
-import {IComponent} from "../typings/Component";
-import {obj} from "../typings/common";
+import Layer from './Layer'
+import { IComponent } from '../typings/Component'
+import { obj } from '../typings/common'
 
-type ILayerProps = IComponent.ILayerProps;
+type ILayerProps = IComponent.ILayerProps
 
-interface ISvgProps extends ILayerProps{
-  path: string;
+interface ISvgProps extends ILayerProps {
+  path: string
 }
 
 class Svg extends Layer {
@@ -19,31 +19,41 @@ class Svg extends Layer {
     this.init()
   }
 
-  init () {
-    const {path, style: { color }} = this.props
-    svgInit(path, color || '')
-      .then(img => {
-        img && img.addEventListener('load', () => {
-          this.table.render()
-        }, {once: true})
-      })
+  init() {
+    const {
+      path,
+      style: { color },
+    } = this.props
+    svgInit(path, color || '').then((img) => {
+      img &&
+        img.addEventListener(
+          'load',
+          () => {
+            this.table.render()
+          },
+          { once: true }
+        )
+    })
   }
 
   render() {
-    const {path, style: { color }} = this.props
+    const {
+      path,
+      style: { color },
+    } = this.props
     const key = imgKey(path, color)
     const img = imgCache[key]
     if (img && img.complete) {
-      this.ctx.drawImage(img, this.left , this.top, this.width, this.height)
+      this.ctx.drawImage(img, this.left, this.top, this.width, this.height)
     }
   }
 }
 
-const imgCache:obj<HTMLImageElement> = {}
-const originSvgCache:obj<string> = {}
+const imgCache: obj<HTMLImageElement> = {}
+const originSvgCache: obj<string> = {}
 const loadingSvg: obj<boolean> = {}
 
-async function svgInit (path, color) {
+async function svgInit(path, color) {
   const key = imgKey(path, color)
   if (imgCache[key]) {
     return null
@@ -58,14 +68,19 @@ async function svgInit (path, color) {
   return imgCache[key]
 }
 
-function imgKey (path:string, color:string) { return path + '__' + color}
+function imgKey(path: string, color: string) {
+  return path + '__' + color
+}
 
-async function svgLoad (path)  {
+async function svgLoad(path) {
   if (originSvgCache[path]) {
     return null
   }
   loadingSvg[path] = true
-  const [res, err] = await fetch(path).then(res => [res, null], err => [null, err])
+  const [res, err] = await fetch(path).then(
+    (res) => [res, null],
+    (err) => [null, err]
+  )
   if (err) {
     console.warn(err)
     return null
@@ -75,17 +90,20 @@ async function svgLoad (path)  {
   return originSvgCache[path]
 }
 
-function svg2img (svg: string, color: string) {
+function svg2img(svg: string, color: string) {
   svg = svg.replace('<svg ', `<svg fill="${color}" `)
-  const blob = new Blob([svg], {type: 'image/svg+xml'});
-  const url = URL.createObjectURL(blob);
-  const image = document.createElement('img');
-  image.addEventListener('load', () => {
-    URL.revokeObjectURL(url)
-  }, {once: true})
-  image.src = url;
+  const blob = new Blob([svg], { type: 'image/svg+xml' })
+  const url = URL.createObjectURL(blob)
+  const image = document.createElement('img')
+  image.addEventListener(
+    'load',
+    () => {
+      URL.revokeObjectURL(url)
+    },
+    { once: true }
+  )
+  image.src = url
   return image
 }
-
 
 export default Svg

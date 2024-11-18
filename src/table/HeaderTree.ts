@@ -1,69 +1,69 @@
-import {Component} from "../component/Component";
-import {ICanvasTable} from "../typings/CanvasTable";
-import HeaderTreeNode from "./HeaderTreeNode";
-import {isEmpty} from "../utils/utils";
-import {treeBFEach, treeEach, treeGetLeaf} from "../utils/tree";
-import {Column} from "./Column";
-import {drawLine, drawRect} from "../utils/draw";
+import { Component } from '../component/Component'
+import { ICanvasTable } from '../typings/CanvasTable'
+import HeaderTreeNode from './HeaderTreeNode'
+import { isEmpty } from '../utils/utils'
+import { treeBFEach, treeEach, treeGetLeaf } from '../utils/tree'
+import { Column } from './Column'
+import { drawLine, drawRect } from '../utils/draw'
 
-type IColumn = ICanvasTable.IColumn;
-type ITableHeaderProps = ICanvasTable.ITableHeaderProps;
+type IColumn = ICanvasTable.IColumn
+type ITableHeaderProps = ICanvasTable.ITableHeaderProps
 
 export class HeaderTree extends Component {
   constructor(private props: ITableHeaderProps) {
-    super();
-    const columnsProps = columnsPropsRearrange(props.colProps);
-    this.columnsInit(columnsProps);
+    super()
+    const columnsProps = columnsPropsRearrange(props.colProps)
+    this.columnsInit(columnsProps)
     this.cellNodesInit(columnsProps)
   }
-  // 列配置的叶子节点是控制列的关键(除了锁列属性之外), 所以这四条属性都是叶子节点对应的列
-  columns: Column[] = [];
-  leftColumns: Column[] = [];
-  rightColumns: Column[] = [];
-  notFixedColumns: Column[] = [];
+  // The leaf node of the column configuration is the key to controlling the column (except for the lock column attribute), so these four attributes are the columns corresponding to the leaf node
+  columns: Column[] = []
+  leftColumns: Column[] = []
+  rightColumns: Column[] = []
+  notFixedColumns: Column[] = []
   /*
-   * 列处理规则:
-   * 1. title属性每层都生效
-   * 2. fixed字段只能在第一层设置, 子节点会自动继承
-   * 3. align都可以设置, 没设置会继承父节点
-   * 4. 其他所有属性只有在叶子节点设置才会生效
+   * Column processing rules:
+   * 1. The title attribute is effective at each level
+   * 2. The fixed field can only be set at the first level, and the child nodes will automatically inherit it
+   * 3. Align can be set, and if not set, it will inherit the parent node
+   * 4. All other attributes will only take effect if they are set at the leaf node
    */
-  columnsInit ({fixedLeft, notFixed, fixedRight}: {[key:string]: IColumn[]}) {
-    // 初始化列
-    let colIndex = 0;
-    const propsArr = [fixedLeft, notFixed, fixedRight];
-    const colArr = [this.leftColumns, this.notFixedColumns, this.rightColumns];
-    // 所有表头单元格继承第一层的fixed属性
-    [...fixedLeft, ...fixedRight, ...notFixed].forEach(rootCol => {
+  columnsInit({ fixedLeft, notFixed, fixedRight }: { [key: string]: IColumn[] }) {
+    // Initialize Column
+    let colIndex = 0
+    const propsArr = [fixedLeft, notFixed, fixedRight]
+    const colArr = [this.leftColumns, this.notFixedColumns, this.rightColumns]
+    // All header cells inherit the fixed property of the first layer
+    ;[...fixedLeft, ...fixedRight, ...notFixed].forEach((rootCol) => {
       treeEach(rootCol, (colProps) => {
         colProps.fixed = rootCol.fixed
       })
-    });
+    })
     propsArr.forEach((colProps, i) => {
-      treeGetLeaf(colProps).forEach(prop => {
+      treeGetLeaf(colProps).forEach((prop) => {
         colArr[i].push(
           new Column({
             ...prop,
             table: this.props.table,
-            index: colIndex++
+            index: colIndex++,
           })
         )
       })
-    });
-    this.columns = [...this.leftColumns, ...this.notFixedColumns, ...this.rightColumns];
+    })
+    this.columns = [...this.leftColumns, ...this.notFixedColumns, ...this.rightColumns]
   }
 
-  deep: number = 1; // 深度
-  rootCells: HeaderTreeNode[] = []; // 第一层的cells
-  leafCells: HeaderTreeNode[] = []; // 叶子层的cells
-  cellNodesInit({fixedLeft, notFixed, fixedRight}: {[key:string]: IColumn[]}) {
-    const propsQueue = [...fixedLeft, ...notFixed, ...fixedRight];
-    const PARENT_KEY = '__PARENT__';
-    let node: HeaderTreeNode = null;
-    const table = this.table;
+  deep: number = 1 // depth
+  rootCells: HeaderTreeNode[] = [] // The first layer of cells
+  leafCells: HeaderTreeNode[] = [] // Leaf layer cells
+  cellNodesInit({ fixedLeft, notFixed, fixedRight }: { [key: string]: IColumn[] }) {
+    const propsQueue = [...fixedLeft, ...notFixed, ...fixedRight]
+    const PARENT_KEY = '__PARENT__'
+    let node: HeaderTreeNode = null
+    const table = this.table
 
     while (propsQueue[0]) {
-      const currProps = propsQueue.shift();
+      const currProps = propsQueue.shift()
       node = new HeaderTreeNode({
         colProps: currProps,
         popTitle: currProps.popTitle,
@@ -71,87 +71,89 @@ export class HeaderTree extends Component {
         table: table,
         ctx: table.ctx,
         style: {
-          padding: [0, table.style.padding]
-        }
-      });
+          padding: [0, table.style.padding],
+        },
+      })
       if (isEmpty(currProps[PARENT_KEY])) {
         this.rootCells.push(node)
       }
-      delete currProps[PARENT_KEY];
+      delete currProps[PARENT_KEY]
 
       if (Array.isArray(currProps.children)) {
-        propsQueue.push(...currProps.children.map(child => {
-          return {
-            [PARENT_KEY]: node,
-            ...child
-          }
-        }));
+        propsQueue.push(
+          ...currProps.children.map((child) => {
+            return {
+              [PARENT_KEY]: node,
+              ...child,
+            }
+          })
+        )
       }
     }
 
     if (node) {
       this.deep = node.treeHeight
     }
-    this.leafCells = treeGetLeaf(this.rootCells, 'childrenCell');
+    this.leafCells = treeGetLeaf(this.rootCells, 'childrenCell')
   }
 
-  get cells () {
-    let cells: HeaderTreeNode[] = [];
-    treeBFEach(this.rootCells, cell => cells.push(cell), 'childrenCell');
-    return cells;
+  get cells() {
+    let cells: HeaderTreeNode[] = []
+    treeBFEach(this.rootCells, (cell) => cells.push(cell), 'childrenCell')
+    return cells
   }
 
-  top: number = 0;
-  get width () {
+  top: number = 0
+  get width() {
     return this.table.width
   }
-  get height () {
+  get height() {
     return this.deep * this.table.style.headerRowHeight
-  };
-  get table () {
+  }
+  get table() {
     return this.props.table
   }
 
-  render () {
+  render() {
     if (isEmpty(this.rootCells)) {
       return
     }
-    const ctx = this.table.ctx;
+    const ctx = this.table.ctx
 
-    drawRect(ctx,0, 0, this.table.style.width, this.height, this.table.style.headerBackColor);
-    drawLine(ctx, 0, this.height - 1, this.table.style.width, this.height - 1);
-    const fixLeftCells = this.rootCells.filter(cell => cell.fixed === 'left');
-    const fixRightCells = this.rootCells.filter(cell => cell.fixed === 'right');
-    const notFixedCells = this.rootCells.filter(cell => cell.fixed !== 'left' && cell.fixed !== 'right');
-    ctx.save();
-    ctx.beginPath();
+    drawRect(ctx, 0, 0, this.table.style.width, this.height, this.table.style.headerBackColor)
+    drawLine(ctx, 0, this.height - 1, this.table.style.width, this.height - 1)
+    const fixLeftCells = this.rootCells.filter((cell) => cell.fixed === 'left')
+    const fixRightCells = this.rootCells.filter((cell) => cell.fixed === 'right')
+    const notFixedCells = this.rootCells.filter((cell) => cell.fixed !== 'left' && cell.fixed !== 'right')
+    ctx.save()
+    ctx.beginPath()
 
-    let leftWidth = fixLeftCells.reduce((pre, curr) => pre + curr.width, 0);
-    let centerWidth = notFixedCells.reduce((pre, curr) => pre + curr.width, 0);
+    let leftWidth = fixLeftCells.reduce((pre, curr) => pre + curr.width, 0)
+    let centerWidth = notFixedCells.reduce((pre, curr) => pre + curr.width, 0)
     // let rightWidth = notFixedCells.reduce((pre, curr) => pre + curr.width, 0);
-    ctx.rect(leftWidth, 0, centerWidth, this.height);
-    ctx.clip();
-    treeBFEach(notFixedCells, cell => cell.innerRender(), 'childrenCell');
-    ctx.restore();
+    ctx.rect(leftWidth, 0, centerWidth, this.height)
+    ctx.clip()
+    treeBFEach(notFixedCells, (cell) => cell.innerRender(), 'childrenCell')
+    ctx.restore()
 
-    treeBFEach(fixLeftCells, cell => cell.innerRender(), 'childrenCell');
-    treeBFEach(fixRightCells, cell => cell.innerRender(), 'childrenCell');
+    treeBFEach(fixLeftCells, (cell) => cell.innerRender(), 'childrenCell')
+    treeBFEach(fixRightCells, (cell) => cell.innerRender(), 'childrenCell')
   }
 }
 
-function columnsPropsRearrange (colProps: IColumn[]) {
-  // 根据锁列的配置整理列的顺序
+function columnsPropsRearrange(colProps: IColumn[]) {
+  // Arrange the order of columns according to the lock column configuration
   const fixedLeft = colProps
-    .filter(col => col.fixed === 'left')
+    .filter((col) => col.fixed === 'left')
     .map((col, i) => {
-      return {...col, fixedIndex: i}
-    });
+      return { ...col, fixedIndex: i }
+    })
   const fixedRight = colProps
-    .filter(col => col.fixed === 'right')
+    .filter((col) => col.fixed === 'right')
     .map((col, i) => {
-      return {...col, fixedIndex: i}
-    });
-  const notFixed = colProps.filter(col => !['left', 'right'].includes(col.fixed));
+      return { ...col, fixedIndex: i }
+    })
+  const notFixed = colProps.filter((col) => !['left', 'right'].includes(col.fixed))
 
-  return {fixedLeft, notFixed, fixedRight}
+  return { fixedLeft, notFixed, fixedRight }
 }

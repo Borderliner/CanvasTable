@@ -1,29 +1,20 @@
 module.exports = {
   resolve: {
-    extensions: ['.js', '.jsx', '.tsx', '.ts', '.scss', '.css']
+    extensions: ['.js', '.jsx', '.tsx', '.ts', '.scss', '.css'],
   },
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ]
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.tsx?$/,
-        use: [
-          {loader: 'babel-loader'}
-        ]
+        use: [{ loader: 'babel-loader' }],
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
@@ -32,9 +23,9 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[hash].[ext]',
-              outputPath: 'images/'
-            }
-          }
+              outputPath: 'images/',
+            },
+          },
         ],
       },
       {
@@ -44,10 +35,10 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[hash].[ext]',
-              outputPath: 'fonts/'
-            }
-          }
-        ]
+              outputPath: 'fonts/',
+            },
+          },
+        ],
       },
       {
         test: /\.(mov|mp4)$/,
@@ -56,11 +47,11 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[hash].[ext]',
-              outputPath: 'videos/'
-            }
-          }
-        ]
-      }
-    ]
-  }
-};
+              outputPath: 'videos/',
+            },
+          },
+        ],
+      },
+    ],
+  },
+}

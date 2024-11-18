@@ -1,17 +1,16 @@
 /** @jsx h */
 
-import h from "../utils/h";
-import Layer from "../component/Layer";
+import h from '../utils/h'
+import Layer from '../component/Layer'
 
 class Tooltip {
-
   wrapper: HTMLElement = null
 
   constructor() {
     this.domInit()
   }
 
-  show (text, layer: Layer) {
+  show(text: string, layer: Layer) {
     this.wrapper.style.display = 'inline-block'
     this.wrapper.textContent = text
     const clientRect = layer.table.wrapper.getBoundingClientRect()
@@ -21,17 +20,20 @@ class Tooltip {
     this.wrapper.style.left = left + 'px'
   }
 
-  hide () {
+  hide() {
     this.wrapper.style.display = 'none'
   }
 
-  domInit () {
+  domInit() {
     return (
-      <div ref={ref => { this.wrapper = ref }} className={'x-tooltip'}>
-      </div>
+      <div
+        ref={(ref) => {
+          this.wrapper = ref
+        }}
+        className={'x-tooltip'}
+      ></div>
     )
   }
-
 }
 
 export default Tooltip

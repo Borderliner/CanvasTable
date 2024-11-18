@@ -1,4 +1,4 @@
-import Layer from "../component/Layer";
+import Layer from '../component/Layer'
 
 export declare module IComponent {
   interface ILayerEventProps {
@@ -9,14 +9,14 @@ export declare module IComponent {
   }
 
   interface IEventCollection {
-    onClick?: (...any) => void,
-    onDoubleClick?: (...any) => void,
-    onContextMenu?: (...any) => void,
-    onMouseEnter?: (...any) => void, // 鼠标移入行
-    onMouseLeave?: (...any) => void,
+    onClick?: (...any) => void
+    onDoubleClick?: (...any) => void
+    onContextMenu?: (...any) => void
+    onMouseEnter?: (...any) => void // 鼠标移入行
+    onMouseLeave?: (...any) => void
   }
 
-  interface ILayerProps{
+  interface ILayerProps {
     ctx?: CanvasRenderingContext2D
     style?: ILayerStyleProps
     hover?: ILayerStyleProps
@@ -38,7 +38,7 @@ export declare module IComponent {
     height?: number | string
     padding?: number | number[]
     color?: string
-    backgroundColor?: string;
+    backgroundColor?: string
     border?: string | string[]
     fontFamily?: string
     fontSize?: string
@@ -50,8 +50,8 @@ export declare module IComponent {
   }
 
   interface ILayerBorderStyle {
-    width:number
-    color:string
+    width: number
+    color: string
   }
 
   interface ILayerStyle {

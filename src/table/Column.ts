@@ -1,58 +1,56 @@
-import {ICanvasTable} from "../typings/CanvasTable";
+import { ICanvasTable } from '../typings/CanvasTable'
 
-type IColumnProps = ICanvasTable.IColumnProps;
+type IColumnProps = ICanvasTable.IColumnProps
 
 export class Column {
-  constructor(private props: IColumnProps) {
-  }
+  constructor(private props: IColumnProps) {}
 
-  get align () {
+  get align() {
     return this.props.align || 'left'
   }
 
-  get width () {
+  get width() {
     return this.props.width || this.table.style.columnWidth
   }
 
-  get left () {
+  get left() {
     return this.table.header.leafCells[this.index].left
   }
 
-  get index () {
+  get index() {
     return this.props.index
   }
 
-  get fixedIndex () {
+  get fixedIndex() {
     return this.props.fixedIndex
   }
 
-  get name () {
+  get name() {
     return this.props.dataIndex || this.props.key
   }
-  get title () {
+  get title() {
     return this.props.title
   }
-  get key () {
+  get key() {
     return this.props.key || this.props.dataIndex
   }
-  get table () {
+  get table() {
     return this.props.table
   }
 
-  get fixed () {
+  get fixed() {
     return this.props.fixed
   }
 
-  get isRender () {
+  get isRender() {
     return !(this.left + this.width < 0 || this.left > this.table.style.width)
   }
 
-  get customRender () {
+  get customRender() {
     return this.props.render
   }
 
-  get onCell () {
+  get onCell() {
     return this.props.onCell
   }
-
 }

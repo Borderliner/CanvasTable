@@ -1,14 +1,14 @@
-import CanvasTable from "../core/CanvasTable";
-import {Column} from "../table/Column";
-import HeaderTreeNode from "../table/HeaderTreeNode";
-import {BodyRow} from "../table/BodyRow";
-import Layer from "../component/Layer";
-import {IComponent} from "./Component";
-import {obj} from "./common";
+import CanvasTable from '../core/CanvasTable'
+import { Column } from '../table/Column'
+import HeaderTreeNode from '../table/HeaderTreeNode'
+import { BodyRow } from '../table/BodyRow'
+import Layer from '../component/Layer'
+import { IComponent } from './Component'
+import { obj } from './common'
 
 export declare module ICanvasTable {
-  type ILayerProps = IComponent.ILayerProps;
-  type IEventCollection = IComponent.IEventCollection;
+  type ILayerProps = IComponent.ILayerProps
+  type IEventCollection = IComponent.IEventCollection
 
   interface ITableStyle {
     width?: number
@@ -19,9 +19,9 @@ export declare module ICanvasTable {
     textColor?: string
     fontSize?: string
     fontFamily?: string
-    headerBackColor? : string
-    headerRowHeight? : number
-    padding?: number  // left and right padding of table's cell
+    headerBackColor?: string
+    headerRowHeight?: number
+    padding?: number // left and right padding of table's cell
   }
 
   interface ITableStyleProps {
@@ -33,9 +33,9 @@ export declare module ICanvasTable {
     textColor?: string
     fontSize?: string
     fontFamily?: string
-    headerBackColor? : string
-    headerRowHeight? : number
-    padding?: number  // left and right padding of table's cell
+    headerBackColor?: string
+    headerRowHeight?: number
+    padding?: number // left and right padding of table's cell
   }
 
   interface ITableEventHandler {
@@ -63,7 +63,7 @@ export declare module ICanvasTable {
     onCell?: ITableEventHandler
   }
 
-  interface IColumnProps extends IColumn{
+  interface IColumnProps extends IColumn {
     table: CanvasTable
     index: number
     fixedIndex?: number
@@ -84,14 +84,13 @@ export declare module ICanvasTable {
     onRow?: ITableEventHandler
   }
 
-  interface IHeaderNodeProps{
+  interface IHeaderNodeProps {
     colProps: IColumn
     parent?: HeaderTreeNode
     table: CanvasTable
   }
 
-  interface IBaseCellProps {
-  }
+  interface IBaseCellProps {}
 
   // interface IHeaderCellProps extends IBaseCellProps{
   //   row: HeaderRow
@@ -120,7 +119,7 @@ export declare module ICanvasTable {
   }
 
   interface IBodyCellProps extends ILayerProps {
-    row: BodyRow,
+    row: BodyRow
     column: Column
     // event?: ITableEventCollection
   }

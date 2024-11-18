@@ -1,15 +1,15 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('path')
+const fs = require('fs')
 const { merge } = require('webpack-merge')
 const webpackCommon = require('./webpack.common')
 
-const appDirectory = fs.realpathSync(process.cwd());
+const appDirectory = fs.realpathSync(process.cwd())
 
-function getPath (dir = '') {
+function getPath(dir = '') {
   return path.resolve(appDirectory, dir)
 }
-const PATH_DIST = getPath('umd');
-const PATH_SRC = getPath('src');
+const PATH_DIST = getPath('umd')
+const PATH_SRC = getPath('src')
 
 module.exports = merge(webpackCommon, {
   entry: PATH_SRC + '/index.ts',
@@ -18,9 +18,8 @@ module.exports = merge(webpackCommon, {
     filename: 'canvastable.min.js',
     library: 'CanvasTable',
     libraryTarget: 'umd',
-    libraryExport: 'default'
+    libraryExport: 'default',
   },
-  mode: "production",
-  plugins: [
-  ]
-});
+  mode: 'production',
+  plugins: [],
+})
