@@ -78,7 +78,7 @@ export const treeGetDeep = <T extends IBaseTree>(
 };
 
 /**
- * 从本身节点开始，向后查找（包含本身）
+ * Start from the node itself and search backwards (including itself)
  */
 export const treeBackFind = <T extends IBaseTree>(
   node: T,
