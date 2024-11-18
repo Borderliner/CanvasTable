@@ -9,6 +9,7 @@ type IRowProps = ICanvasTable.IRowProps
 type IEventCollection = IComponent.IEventCollection
 
 export class BodyRow extends Layer {
+  index: number
   constructor(protected props: IRowProps) {
     super({
       ...props,
@@ -23,8 +24,9 @@ export class BodyRow extends Layer {
     this.on('onMouseLeave', () => {
       this.highlight(false)
     })
+    this.index = this.props.index
   }
-  index = this.props.index
+
   get data() {
     return this.table.source[this.index]
   }
