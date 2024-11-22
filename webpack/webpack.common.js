@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.scss', '.css'],
   },

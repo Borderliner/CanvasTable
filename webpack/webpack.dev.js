@@ -1,25 +1,25 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const webpack = require('webpack')
-const path = require('path')
-const fs = require('fs')
-const { merge } = require('webpack-merge')
-const webpackCommon = require('./webpack.common')
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import webpack from 'webpack';
+import path from 'path';
+import fs from 'fs';
+import { merge } from 'webpack-merge';
+import webpackCommon from './webpack.common.js';
 
-const appDirectory = fs.realpathSync(process.cwd())
+const appDirectory = fs.realpathSync(process.cwd());
 
 function getPath(dir = '') {
-  return path.resolve(appDirectory, dir)
+  return path.resolve(appDirectory, dir);
 }
 
-const PATH_SRC = getPath('src/test')
-const PATH_DIST = getPath('devdist')
-const MATCH_NODE_MODULES = '/node_modules/'
+const PATH_SRC = getPath('src/test');
+const PATH_DIST = getPath('devdist');
+const MATCH_NODE_MODULES = '/node_modules/';
 
-const pkg = require(getPath('package.json'))
-const projectName = pkg.projectName
+const pkg = JSON.parse(fs.readFileSync(getPath('package.json'), 'utf8'));
+const projectName = pkg.projectName;
 
-module.exports = merge(webpackCommon, {
+export default merge(webpackCommon, {
   entry: PATH_SRC + '/test.tsx',
   output: {
     pathinfo: true,
@@ -32,7 +32,7 @@ module.exports = merge(webpackCommon, {
   },
   devServer: {
     static: {
-      directory: PATH_DIST, // Changed from 'contentBase'
+      directory: PATH_DIST,
     },
     host: '0.0.0.0',
   },
@@ -49,4 +49,4 @@ module.exports = merge(webpackCommon, {
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
-})
+});

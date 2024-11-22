@@ -1,13 +1,14 @@
 {
   "name": "@borderliner/canvas-table",
-  "version": "0.0.8",
-  "description": "⚡ High-performance canvas table that display mass of data for web. ",
+  "version": "0.0.9",
+  "description": "⚡ High-performance canvas table that display mass of data for web.",
   "keywords": [
     "canvas table",
     "canvas",
     "table",
     "grid"
   ],
+  "type": "module",
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack/webpack.dev.js --open --static",
     "build:dist": "gulp",
@@ -44,9 +45,9 @@
     "gulp-babel": "8.0.0",
     "gulp-clean": "0.4.0",
     "gulp-sass": "^5.1.0",
-    "gulp-typescript": "6.0.0-alpha.1",
+    "gulp-typescript": "5.0.1",
     "html-webpack-plugin": "5.6.3",
-    "merge2": "^1.4.1",
+    "merge-stream": "^2.0.0",
     "sass": "^1.81.0",
     "sass-loader": "^16.0.3",
     "source-map-loader": "5.0.0",

@@ -1,101 +1,65 @@
-const gulp = require('gulp')
-const babel = require('gulp-babel')
-const through2 = require('through2')
-const sass = require('gulp-sass')(require('sass'))
-const ts = require('gulp-typescript')
-const path = require('path')
-const merge2 = require('merge2')
-const del = require('del')
-const fs = require('fs')
+import gulp from 'gulp'
+import { deleteAsync } from 'del'
+import babel from 'gulp-babel'
+import gulpSass from 'gulp-sass'
+import * as sassCompiler from 'sass'
+import typescript from 'gulp-typescript'
+import mergeStream from 'merge-stream'
+import path from 'path'
+import { readFileSync } from 'fs'
 
-const tsDefaultReporter = ts.reporter.defaultReporter()
 const cwd = process.cwd()
 const distDir = path.join(cwd, './dist')
-const babelrc = fs.readFileSync('./.babelrc', 'utf-8')
-const babelConfig = JSON.parse(babelrc)
 
-// const tsConfig = require(path.join(cwd,'./tsconfig.json'))
-const { series } = gulp
+const babelConfig = JSON.parse(readFileSync(new URL('./.babelrc', import.meta.url)))
+const sass = gulpSass(sassCompiler)
 
-function babelify (js) {
-  console.log('compiling js...')
-  return js
-    .pipe(babel(babelConfig))
-    .pipe(through2.obj(function z (file, encoding, next) {
-      this.push(file.clone())
-      file.contents = Buffer.from(file.contents.toString().replace(/\.scss/g, '.css'))
-      this.push(file)
-      next()
-    }))
-    .pipe(gulp.dest(distDir))
-}
-
-function compileScss () {
-  console.log('compiling css...')
+// Compile JavaScript with Babel
+function babelify() {
   return gulp
-    .src(['src/**/*.scss'])
-    .pipe(sass())
+    .src(['src/**/*.{js,jsx}', '!src/**/*.spec.{js,jsx}']) // Exclude test files
+    .pipe(babel(babelConfig))
     .pipe(gulp.dest(distDir))
 }
-function compile () {
-  // assets
-  const assets = gulp
-    .src(['src/**/*.@(png|svg|jpg|ico)'])
-    .pipe(gulp.dest(distDir))
 
-  // typescript
-  const tsSource = [
-    'src/**/*.{ts,tsx}',
-    '!src/test/*.{ts,tsx}',
-    'typings/**/*.d.ts'
-  ]
-  const jsSource = [
-    'src/**/*.{js,jsx}'
-  ]
-  const css = compileScss()
-  let error = 0
-  // allow jsx file in components/xxx/
-  // if (tsConfig.compilerOptions.allowJs) {
-  //   source.unshift('src/**/*.{js,jsx}')
-  // }
-  console.log('compiling ts...')
-  const tsProject = ts.createProject(path.join(cwd, './tsconfig.json'))
-  const tsResult = gulp.src(tsSource)
-    .pipe(tsProject({
-      error (e) {
-        tsDefaultReporter.error(e)
-        error = 1
-      },
-      finish: tsDefaultReporter.finish
-    }))
-
-  function check () {
-    if (error) {
-      process.exit(1)
-    } else {
-      console.log('Compiled!')
-    }
-  }
-
-  tsResult.on('finish', check)
-  tsResult.on('end', check)
-  const jsFilesStream = babelify(merge2([tsResult.js, gulp.src(jsSource)]))
-  const tsd = tsResult.dts.pipe(gulp.dest(distDir))
-  return merge2([css, jsFilesStream, tsd, assets])
+function compileCss() {
+  return gulp.src('src/**/*.css').pipe(sass().on('error', sass.logError)).pipe(gulp.dest(distDir))
 }
 
-function cleanDist () {
-  return del([
-    'dist/**/*'
+// Compile TypeScript
+function compileTs() {
+  const tsProject = typescript.createProject('tsconfig.json')
+  const tsResult = tsProject.src().pipe(tsProject())
+
+  return mergeStream([
+    tsResult.dts.pipe(gulp.dest(distDir)),
+    // Here we apply Babel to the TypeScript compiled JavaScript
+    tsResult.js.pipe(babel(babelConfig)).pipe(gulp.dest(distDir)),
   ])
 }
 
-exports.default = series(
-  cleanDist,
-  compile
-)
+// Copy assets
+function copyAssets() {
+  return gulp.src(['src/**/*.@(png|svg|jpg|ico)', '!src/**/*.spec.*']).pipe(gulp.dest(distDir))
+}
 
-// gulp.task('compile', done => {
-//   console.log('Compile to js...')
-//   compile().on('finish', done)
-// })
+// Clean the dist directory
+function cleanDist() {
+  return deleteAsync(['dist/**/*'], { force: true })
+}
+
+// Define task sequence
+const build = gulp.series(cleanDist, gulp.parallel(compileCss, compileTs, babelify, copyAssets))
+
+export default build
+
+// Watch task (to be used with a script or command line)
+function watch() {
+  gulp.watch('src/**/*.{css, scss}', compileCss)
+  gulp.watch('src/**/*.{ts,tsx}', compileTs)
+  gulp.watch('src/**/*.{js,jsx}', babelify)
+  gulp.watch('src/**/*.{png,svg,jpg,ico}', copyAssets)
+}
+
+// Export watch function for use externally
+export { watch }

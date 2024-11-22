@@ -1,8 +1,9 @@
-# canvas-table
+# @borderliner/canvas-table
 
 English | <a href="./doc/README_CN.md">中文</a>
 
-a table component got the highest performance that works on canvas! 🚀
+⚡ High-performance canvas table that display mass of data for web.
+Fork of: [x-canvas-table](https://github.com/xwinstone/canvastable), upgraded to ES module and latest dependencies.
 
 14.7kb gizped, no dependency!
 
@@ -11,13 +12,13 @@ a table component got the highest performance that works on canvas! 🚀
 ![100000*80](./assets/100000-80.gif)
 
 ## Feature
-* high performance works on canvas. 🚀
-* event support. such as click, mouseenter, mouseleave, etc. ✨
-* custom style config. 💄
-* custom icon support. 👍
-* tooltip for every component. 🔎
-* write with typescript. 👔
-* you can even create your own component to display!!! 💖
+* High performance works on canvas. 🚀
+* Event support, such as click, mouseenter, mouseleave, etc. ✨
+* Custom style config. 💄
+* Custom icon support. 👍
+* Tooltip for every component. 🔎
+* Write with typescript. 👔
+* You can even create your own component to display! 💖
 
 >! it's just like a table implement on dom!
 
@@ -35,21 +36,21 @@ a table component got the highest performance that works on canvas! 🚀
 ### import
 1. use npm
 ```shell script
-npm i x-canvas-table
+npm i @borderliner/canvas-table
 ```
 
 2. use cdn
 ```html
-<script src="https://unpkg.com/x-canvas-table/umd/canvastable.min.js"></script>
+<script src="https://unpkg.com/@borderliner/canvas-table/umd/canvastable.min.js"></script>
 ```
 
 ### basic usage
 ```html
-<div id="container"></div>
+<div id="canvas-table"></div>
 ```
 
 ```js
-import CanvasTable from "x-canvas-table";
+import CanvasTable from "@borderliner/canvas-table";
 
 const columns = [
   {title: 'avatar', dataIndex: 'avatar'},
@@ -64,7 +65,7 @@ const dataSource = [
   {avatar: '-',name: 'johnson', age: 70, address: 'England'}
 ]
 const ct = new CanvasTable({
-  container: document.getElementById('container'),
+  container: document.getElementById('canvas-table'),
   columns: columns,
   style: { height: 500, width: '100%' }
 })
