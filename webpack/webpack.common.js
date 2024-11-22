@@ -14,7 +14,7 @@ export default {
       },
       {
         test: /\.tsx?$/,
-        use: [{ loader: 'babel-loader' }],
+        use: [{ loader: 'ts-loader' }],
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,

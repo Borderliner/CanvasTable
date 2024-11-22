@@ -22,7 +22,6 @@ function compileTs() {
   const tsResult = gulp.src(tsSource).pipe(tsProject())
 
   return mergeStream([
-    // Here we apply Babel to the TypeScript compiled JavaScript
     tsResult.js.pipe(gulp.dest(distDir)),
     tsResult.dts.pipe(gulp.dest(distDir)),
   ])
