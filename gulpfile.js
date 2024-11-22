@@ -12,7 +12,7 @@ const distDir = path.join(cwd, './dist')
 const sass = gulpSass(sassCompiler)
 
 function compileCss() {
-  return gulp.src('src/**/*.css').pipe(sass().on('error', sass.logError)).pipe(gulp.dest(distDir))
+  return gulp.src('./src/**/*.{css,scss}').pipe(sass().on('error', sass.logError)).pipe(gulp.dest(distDir))
 }
 
 // Compile TypeScript
@@ -29,12 +29,12 @@ function compileTs() {
 
 // Copy assets
 function copyAssets() {
-  return gulp.src(['src/**/*.@(png|svg|jpg|ico)', '!src/**/*.spec.*']).pipe(gulp.dest(distDir))
+  return gulp.src(['./src/**/*.@(png|svg|jpg|ico)', '!./src/**/*.spec.*']).pipe(gulp.dest(distDir))
 }
 
 // Clean the dist directory
 function cleanDist() {
-  return deleteAsync(['dist/**/*'], { force: true })
+  return deleteAsync(['./dist/**/*'], { force: true })
 }
 
 // Define task sequence
@@ -44,9 +44,9 @@ export default build
 
 // Watch task (to be used with a script or command line)
 function watch() {
-  gulp.watch('src/**/*.{css, scss}', compileCss)
-  gulp.watch('src/**/*.{ts,tsx}', compileTs)
-  gulp.watch('src/**/*.{png,svg,jpg,ico}', copyAssets)
+  gulp.watch('./src/**/*.{css, scss}', compileCss)
+  gulp.watch('./src/**/*.{ts,tsx}', compileTs)
+  gulp.watch('./src/**/*.{png,svg,jpg,ico}', copyAssets)
 }
 
 // Export watch function for use externally
