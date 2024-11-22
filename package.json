@@ -1,7 +1,7 @@
 {
-  "name": "x-canvas-table",
-  "version": "0.0.7",
-  "description": "a table component got the highest performance that works on canvas.",
+  "name": "CanvasTable",
+  "version": "0.0.8",
+  "description": "⚡ High-performance canvas table that display mass of data for web. ",
   "keywords": [
     "canvas table",
     "canvas",
@@ -20,11 +20,11 @@
     "dist",
     "umd"
   ],
-  "repository": "https://github.com/xwinstone/canvastable.git",
+  "repository": "https://github.com/Borderliner/CanvasTable",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "author": "xwinstone",
+  "author": "Borderliner",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "7.26.0",
