@@ -1,5 +1,5 @@
 #!/bin/bash
 
-npm run build:dist
-npm run build:umd
-npm publish
+pnpm build:dist
+pnpm build:umd
+pnpm publish

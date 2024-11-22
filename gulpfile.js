@@ -1,26 +1,15 @@
 import gulp from 'gulp'
 import { deleteAsync } from 'del'
-import babel from 'gulp-babel'
 import gulpSass from 'gulp-sass'
 import * as sassCompiler from 'sass'
 import typescript from 'gulp-typescript'
 import mergeStream from 'merge-stream'
 import path from 'path'
-import { readFileSync } from 'fs'
 
 const cwd = process.cwd()
 const distDir = path.join(cwd, './dist')
 
-const babelConfig = JSON.parse(readFileSync(new URL('./.babelrc', import.meta.url)))
 const sass = gulpSass(sassCompiler)
-
-// Compile JavaScript with Babel
-function babelify() {
-  return gulp
-    .src(['src/**/*.{js,jsx}', '!src/**/*.spec.{js,jsx}']) // Exclude test files
-    .pipe(babel(babelConfig))
-    .pipe(gulp.dest(distDir))
-}
 
 function compileCss() {
   return gulp.src('src/**/*.css').pipe(sass().on('error', sass.logError)).pipe(gulp.dest(distDir))
@@ -28,13 +17,14 @@ function compileCss() {
 
 // Compile TypeScript
 function compileTs() {
-  const tsProject = typescript.createProject('tsconfig.json')
-  const tsResult = tsProject.src().pipe(tsProject())
+  const tsSource = ['./src/**/*.{ts,tsx}', '!./src/test/*.{ts,tsx}', './src/typings/**/*.d.ts']
+  const tsProject = typescript.createProject('./tsconfig.json')
+  const tsResult = gulp.src(tsSource).pipe(tsProject())
 
   return mergeStream([
-    tsResult.dts.pipe(gulp.dest(distDir)),
     // Here we apply Babel to the TypeScript compiled JavaScript
-    tsResult.js.pipe(babel(babelConfig)).pipe(gulp.dest(distDir)),
+    tsResult.js.pipe(gulp.dest(distDir)),
+    tsResult.dts.pipe(gulp.dest(distDir)),
   ])
 }
 
@@ -49,7 +39,7 @@ function cleanDist() {
 }
 
 // Define task sequence
-const build = gulp.series(cleanDist, gulp.parallel(compileCss, compileTs, babelify, copyAssets))
+const build = gulp.series(cleanDist, gulp.parallel(compileCss, compileTs, copyAssets))
 
 export default build
 
@@ -57,7 +47,6 @@ export default build
 function watch() {
   gulp.watch('src/**/*.{css, scss}', compileCss)
   gulp.watch('src/**/*.{ts,tsx}', compileTs)
-  gulp.watch('src/**/*.{js,jsx}', babelify)
   gulp.watch('src/**/*.{png,svg,jpg,ico}', copyAssets)
 }
 

@@ -33,9 +33,9 @@
 
 ## 使用方法
 ### 引入
-1. 使用 npm
+1. 使用 pnpm
 ```shell script
-npm i x-canvas-table
+pnpm i x-canvas-table
 ```
 
 2. 使用 cdn

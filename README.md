@@ -34,9 +34,9 @@ Fork of: [x-canvas-table](https://github.com/xwinstone/canvastable), upgraded to
 
 ## Usage
 ### import
-1. use npm
+1. use pnpm
 ```shell script
-npm i @borderliner/canvas-table
+pnpm i @borderliner/canvas-table
 ```
 
 2. use cdn

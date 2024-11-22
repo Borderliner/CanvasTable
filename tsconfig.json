@@ -10,12 +10,12 @@
     "noEmitHelpers": true,
     "allowSyntheticDefaultImports": true,
     "jsxFactory": "h",
-    "typeRoots" : ["./typings"],
+    "typeRoots" : ["src/typings"],
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
-    "./src/**/*"
+    "./src/**/*",
   ]
 }

@@ -37,13 +37,13 @@ export const toBlank = (value, str = '') => {
   return value || value === 0 ? value + '' : str
 }
 
-// export const removeBlank = (str) => {
-//   let parseReg = /\s{2,}/g;
-//   if (typeof str === 'string') {
-//     return str.replace(parseReg, ' ');
-//   }
-//   return str;
-// };
+export const removeBlank = (str) => {
+  let parseReg = /\s{2,}/g
+  if (typeof str === 'string') {
+    return str.replace(parseReg, ' ')
+  }
+  return str
+}
 
 export const percentCalc = (number: string | number, parentNumber: () => number) => {
   if (typeof number === 'string') {
@@ -94,16 +94,16 @@ export const cssParser = {
   },
 }
 
-// export const throttling = function(action, delay) { // 函数节流
-//   let last = 0;
-//   return function(...args){
-//     let curr = + new Date();
-//     if (curr - last > delay){
-//       action.apply(this, args) ;
-//       last = curr
-//     }
-//   }
-// };
+export const throttling = function (action, delay) {
+  let last = 0
+  return function (...args) {
+    let curr = +new Date()
+    if (curr - last > delay) {
+      action.apply(this, args)
+      last = curr
+    }
+  }
+}
 
 export const debounce = function (method, delay) {
   // Function anti-shake
