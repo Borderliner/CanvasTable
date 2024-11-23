@@ -79,9 +79,13 @@ function compileTypescript() {
   ])
 }
 
+function copyTypings() {
+  return gulp.src('./src/typings/**').pipe(gulp.dest(`${distDir}/typings`))
+}
+
 function cleanDist() {
   return deleteAsync(['./dist/**/*'], { force: true })
 }
 
-const build = gulp.series(cleanDist, gulp.parallel([compileAssets, compileScss, compileTypescript]))
+const build = gulp.series(cleanDist, gulp.parallel([compileAssets, compileScss, compileTypescript, copyTypings]))
 export default build
