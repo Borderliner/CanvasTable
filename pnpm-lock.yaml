@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      ts-loader:
-        specifier: ^9.5.1
-        version: 9.5.1(typescript@5.6.3)(webpack@5.96.1)
     devDependencies:
       clean-webpack-plugin:
         specifier: 4.0.0
@@ -38,7 +34,7 @@ importers:
         version: 5.1.0
       gulp-typescript:
         specifier: 5.0.1
-        version: 5.0.1(typescript@5.6.3)
+        version: 5.0.1(typescript@5.7.2)
       html-webpack-plugin:
         specifier: 5.6.3
         version: 5.6.3(webpack@5.96.1)
@@ -63,9 +59,12 @@ importers:
       through2:
         specifier: 4.0.2
         version: 4.0.2
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.7.2)(webpack@5.96.1)
       typescript:
-        specifier: 5.6.3
-        version: 5.6.3
+        specifier: 5.7.2
+        version: 5.7.2
       webpack:
         specifier: 5.96.1
         version: 5.96.1(webpack-cli@5.1.4)
@@ -2269,8 +2268,8 @@ packages:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
 
-  typescript@5.6.3:
-    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
+  typescript@5.7.2:
+    resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -3644,13 +3643,13 @@ snapshots:
       strip-ansi: 6.0.1
       vinyl-sourcemaps-apply: 0.2.1
 
-  gulp-typescript@5.0.1(typescript@5.6.3):
+  gulp-typescript@5.0.1(typescript@5.7.2):
     dependencies:
       ansi-colors: 3.2.4
       plugin-error: 1.0.1
       source-map: 0.7.4
       through2: 3.0.2
-      typescript: 5.6.3
+      typescript: 5.7.2
       vinyl: 2.2.1
       vinyl-fs: 3.0.3
 
@@ -4703,14 +4702,14 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  ts-loader@9.5.1(typescript@5.6.3)(webpack@5.96.1):
+  ts-loader@9.5.1(typescript@5.7.2)(webpack@5.96.1):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.17.1
       micromatch: 4.0.8
       semver: 7.6.3
       source-map: 0.7.4
-      typescript: 5.6.3
+      typescript: 5.7.2
       webpack: 5.96.1(webpack-cli@5.1.4)
 
   tslib@2.8.1: {}
@@ -4720,7 +4719,7 @@ snapshots:
       media-typer: 0.3.0
       mime-types: 2.1.35
 
-  typescript@5.6.3: {}
+  typescript@5.7.2: {}
 
   unc-path-regex@0.1.2: {}
 

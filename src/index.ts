@@ -1,4 +1,4 @@
 import CanvasTable from './core/CanvasTable'
-import './style/style.css'
+import './style/style.scss'
 
 export default CanvasTable

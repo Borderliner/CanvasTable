@@ -5,6 +5,7 @@
     "sourceMap": true,
     "jsx": "react",
     "outDir": "./dist", 
+    "allowJs": true,
     "declaration": true, 
     "declarationDir": "./dist" ,
     "moduleResolution": "node",
@@ -12,7 +13,7 @@
     "noEmitHelpers": true,
     "allowSyntheticDefaultImports": true,
     "jsxFactory": "h",
-    "typeRoots" : ["src/typings"],
+    "typeRoots" : ["./src/typings"],
   },
   "exclude": [
     "node_modules"

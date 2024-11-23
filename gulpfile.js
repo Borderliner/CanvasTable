@@ -2,52 +2,86 @@ import gulp from 'gulp'
 import { deleteAsync } from 'del'
 import gulpSass from 'gulp-sass'
 import * as sassCompiler from 'sass'
-import typescript from 'gulp-typescript'
+import gulpTs from 'gulp-typescript'
 import mergeStream from 'merge-stream'
 import path from 'path'
+import through2 from 'through2'
 
+const tsDefaultReporter = gulpTs.reporter.defaultReporter()
 const cwd = process.cwd()
 const distDir = path.join(cwd, './dist')
-
 const sass = gulpSass(sassCompiler)
 
-function compileCss() {
-  return gulp.src('./src/**/*.{css,scss}').pipe(sass().on('error', sass.logError)).pipe(gulp.dest(distDir))
+// const tsConfig = require(path.join(cwd,'./tsconfig.json'))
+
+function transform() {
+  console.log('Applying Transformation...')
+  return through2.obj((file, encoding, next) => {
+
+    if (file.isBuffer()) {
+      console.log('Transforming:', file.path)
+      // Replace .scss references with .css in the file contents
+      const updatedContent = file.contents.toString().replace(/\.scss/g, '.css')
+      file.contents = Buffer.from(updatedContent)
+    }
+    next(null, file) // Pass the transformed file
+  })
 }
 
-// Compile TypeScript
-function compileTs() {
-  const tsSource = ['./src/**/*.{ts,tsx}', '!./src/test/*.{ts,tsx}', './src/typings/**/*.d.ts']
-  const tsProject = typescript.createProject('./tsconfig.json')
-  const tsResult = gulp.src(tsSource).pipe(tsProject())
+function compileScss() {
+  console.log('Compiling SCSS w/ Sass...')
+  return gulp.src(['./src/**/*.scss']).pipe(sass({
+    silenceDeprecations: ['legacy-js-api']
+  })).pipe(gulp.dest(distDir))
+}
+
+function compileAssets() {
+  return gulp.src(['./src/**/*.@(png|svg|jpg|ico)']).pipe(gulp.dest(distDir))
+}
+
+function compileTypescript() {
+  const tsSource = ['./src/**/*.{ts,tsx}', '!src/test/*.{ts,tsx}', './src/typings/**/*.d.ts']
+  const jsSource = ['./src/**/*.{js,jsx}']
+  let error = 0
+
+  console.log('Compiling TypeScript...')
+  const tsProject = gulpTs.createProject(path.join(cwd, './tsconfig.json'))
+
+  // Compile TypeScript
+  const tsResult = gulp.src(tsSource).pipe(
+    tsProject({
+      error(e) {
+        tsDefaultReporter.error(e)
+        error = 1
+      },
+      finish: tsDefaultReporter.finish,
+    })
+  )
+
+  // Error handling
+  function check() {
+    if (error) {
+      process.exit(1)
+    } else {
+      console.log('TypeScript compilation successful!')
+    }
+  }
+
+  tsResult.on('finish', check)
+  tsResult.on('end', check)
 
   return mergeStream([
-    tsResult.js.pipe(gulp.dest(distDir)),
+    // Process TypeScript output with Babel and custom transformations
+    tsResult.js.pipe(transform()).pipe(gulp.dest(distDir)),
+
+    // Copy TypeScript declaration files
     tsResult.dts.pipe(gulp.dest(distDir)),
   ])
 }
 
-// Copy assets
-function copyAssets() {
-  return gulp.src(['./src/**/*.@(png|svg|jpg|ico)', '!./src/**/*.spec.*']).pipe(gulp.dest(distDir))
-}
-
-// Clean the dist directory
 function cleanDist() {
   return deleteAsync(['./dist/**/*'], { force: true })
 }
 
-// Define task sequence
-const build = gulp.series(cleanDist, gulp.parallel(compileCss, compileTs, copyAssets))
-
+const build = gulp.series(cleanDist, gulp.parallel([compileAssets, compileScss, compileTypescript]))
 export default build
-
-// Watch task (to be used with a script or command line)
-function watch() {
-  gulp.watch('./src/**/*.{css, scss}', compileCss)
-  gulp.watch('./src/**/*.{ts,tsx}', compileTs)
-  gulp.watch('./src/**/*.{png,svg,jpg,ico}', copyAssets)
-}
-
-// Export watch function for use externally
-export { watch }
