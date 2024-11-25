@@ -42,9 +42,10 @@
       const refreshTime = Math.floor(Math.random() * 100) + 400 // slow
       // const refreshTime = 500 // fast
       console.log(refreshTime)
-      setInterval(() => {
+      ct.source = []
+      setTimeout(() => {
         ct.source = dataMock(50)
-      }, refreshTime)
+      }, 3000)
     }
     function dataMock(len) {
       let data = []

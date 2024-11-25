@@ -100,12 +100,12 @@ export class BodySection extends Component {
       )
     }
     if (isEmpty(this.rows)) {
-      noData(this.table.ctx, 0, headerHeight, bodyWidth, bodyHeight)
+      noData(this.table.ctx, 0, headerHeight, bodyWidth, bodyHeight, 140, this.table.style.textColor)
     } else {
       this.table.ctx.clearRect(0, headerHeight, bodyWidth, bodyHeight)
       this.rows.forEach((row) => row.innerRender())
     }
-  }
+  }x
   clear() {
     this.rows.forEach((row) => row.destroy())
     this.rows = []
