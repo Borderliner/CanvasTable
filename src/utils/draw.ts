@@ -131,7 +131,7 @@ export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   ctx.textBaseline = 'middle'
   ctx.font =
     fontSize +
-    'Inter,px -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
+    'px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
   ctx.fillText('No Data', centerX, centerY + originW / 2 + (originH - originW) / 2)
   ctx.restore()
 }

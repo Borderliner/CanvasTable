@@ -75,7 +75,7 @@ class CanvasTable {
   ctxInit() {
     this.ctx = this.canvas.getContext('2d', { alpha: false })
     this.ctx.setTransform(PIXEL_RATIO, 0, 0, PIXEL_RATIO, 0, 0)
-    this.ctx.fillStyle = this.style.textColor
+    this.ctx.fillStyle = '#ffffff'
     this.ctx.font = this.style.fontSize + ' ' + this.style.fontFamily
     this.ctx.textBaseline = 'middle'
     this.ctx.strokeStyle = this.style.borderColor
