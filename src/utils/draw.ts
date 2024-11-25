@@ -72,8 +72,9 @@ export const text2Ellipsis = (ctx: CanvasRenderingContext2D, str: string, maxWid
 }
 
 export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, originW = 140) => {
+  ctx.clearRect(0, y, w, h)
   ctx.fillStyle = '#ffffff'
-  ctx.fillRect(0, 0, w, h)
+  ctx.fillRect(0, y, w, h)
 
   let originH = originW + originW * 0.4
   let centerX = x + w / 2

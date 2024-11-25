@@ -1,6 +1,6 @@
 {
   "name": "@borderliner/canvas-table",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "⚡ High-performance canvas table that display mass of data for web.",
   "keywords": [
     "canvas table",

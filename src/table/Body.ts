@@ -81,6 +81,9 @@ export class BodySection extends Component {
     // }
   }
   render(start = 0, renderLen = this.table.source.length) {
+    const headerHeight = this.table.header.height
+    const bodyHeight = this.table.style.height - headerHeight
+    const bodyWidth = this.table.style.width
     // const dataLen = this.source.length;
     // const rowLen = this.body.rows.length;
     // // The number of rows that need to be rendered is greater than the number of rows that need to be added
@@ -97,12 +100,9 @@ export class BodySection extends Component {
       )
     }
     if (isEmpty(this.rows)) {
-      const headerHeight = this.table.header.height
-      const bodyHeight = this.table.style.height - headerHeight
-      const bodyWidth = this.table.style.width
-
       noData(this.table.ctx, 0, headerHeight, bodyWidth, bodyHeight)
     } else {
+      this.table.ctx.clearRect(0, headerHeight, bodyWidth, bodyHeight)
       this.rows.forEach((row) => row.innerRender())
     }
   }
