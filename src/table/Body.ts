@@ -87,7 +87,7 @@ export class BodySection extends Component {
     // if (renderLen > rowLen) {
     //
     // }
-/*     if (isEmpty(this.rows)) {
+    if (isEmpty(this.rows)) {
       this.rows = Array.from({ length: renderLen }).map(
         (nul, i) =>
           new BodyRow({
@@ -95,7 +95,7 @@ export class BodySection extends Component {
             index: start + i,
           })
       )
-    } */
+    }
     if (isEmpty(this.rows)) {
       const headerHeight = this.table.header.height
       const bodyHeight = this.table.style.height - headerHeight
