@@ -72,16 +72,35 @@ export const text2Ellipsis = (ctx: CanvasRenderingContext2D, str: string, maxWid
 }
 
 export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, originW = 140) => {
+  ctx.clearRect(0, 0, w, h)
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, w, h)
+
   let originH = originW + originW * 0.4
   let centerX = x + w / 2
   let centerY = y + h / 2 - (originH - originW)
   ctx.save()
-  ctx.fillStyle = '#ebebeb'
+
+  /* ctx.fillStyle = '#ebebeb'
   ctx.beginPath()
   ctx.arc(centerX, centerY, originW / 2, 0, Math.PI * 2, false)
-  ctx.fill()
+  ctx.fill() */
 
-  ctx.strokeStyle = '#ffffff'
+  // Circle for the forbidden sign
+  ctx.beginPath()
+  ctx.arc(centerX, centerY, originW / 4, 0.85, 2 * Math.PI + 0.85, false) // (centerX, centerY, radius, startAngle, endAngle)
+  ctx.strokeStyle = '#919191' // Dark grey color for the stroke
+  ctx.lineWidth = 8
+  ctx.stroke()
+
+  // Diagonal line (from top-left to bottom-right)
+  ctx.beginPath()
+  ctx.strokeStyle = '#575757'
+  ctx.moveTo(centerX - originW / 4.8, centerY - originH / 4.8) // Start point
+  ctx.lineTo(centerX + originW / 4.8, centerY + originH / 4.8) // End point
+  ctx.stroke()
+
+  /* ctx.strokeStyle = '#1d1d1f'
   ctx.lineWidth = originW / 20
   ctx.beginPath()
   let rectWidth = originW / 3
@@ -123,16 +142,16 @@ export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   ctx.lineTo(centerX + cosWidth / 2, centerY - sinWidth / 2)
   ctx.lineTo(centerX - cosWidth / 2, centerY - (3 * sinWidth) / 2)
   ctx.stroke()
-  ctx.restore()
+  ctx.restore() */
 
-  let fontSize = originW * 0.2
-  ctx.fillStyle = '#cecece'
+  let fontSize = originW * 0.17
+  ctx.fillStyle = '#1d1d1d'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.font =
     fontSize +
     'px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
-  ctx.fillText('No Data', centerX, centerY + originW / 2 + (originH - originW) / 2)
+  ctx.fillText('No Data', centerX, centerY + originW / 3 + (originH - originW) / 3)
   ctx.restore()
 }
 
