@@ -92,7 +92,7 @@ export class CanvasTableEvent {
   pathGet() {
     let entryLayer: Layer = null
     if (this.eventY <= this.table.header.height) {
-      // 点击事在header部分生效
+      // Clicking takes effect in the header
       let cells = [...this.table.header.cells]
       cells.sort((a, b) => b.zIndex - a.zIndex)
       for (let headerCell of cells) {
@@ -109,7 +109,7 @@ export class CanvasTableEvent {
         }
       }
     } else {
-      // 点击事在body部分生效
+      // Click event takes effect in the body part
       for (let row of this.table.body.rows) {
         if (this.eventY > row.top && this.eventY < row.top + row.height) {
           entryLayer = row

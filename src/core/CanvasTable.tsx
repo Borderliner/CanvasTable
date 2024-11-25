@@ -103,7 +103,7 @@ class CanvasTable {
     //   const newData = newSource[i];
     //   const oldData = this.source[i];
     //   // diff
-    //   if (newData && !oldData) { // 新增
+    //   if (newData && !oldData) { // Added
     //     this.body.rows.push(
     //       new BodyRow({
     //         ctx: this.ctx,
@@ -112,11 +112,11 @@ class CanvasTable {
     //         onRow: this.props.onRow
     //       })
     //     )
-    //   } else if (oldData && newData) { // 更新
+    //   } else if (oldData && newData) { // Renew
     //     this.body.rows[i].update()
     //   }
     // }
-    // // 删除
+    // // Delete
     // if (oldLength > newLength) {
     //   this.body.rows.splice(newLength, oldLength - newLength);
     // }
@@ -131,10 +131,10 @@ class CanvasTable {
     return this._source
   }
 
-  height: number = 0 // 表格数据高度
-  width: number = 0 // 表格数据宽度
-  dataHeight: number = 0 // 表格数据真实高度
-  dataWidth: number = 0 // 表格数据真实宽度
+  height: number = 0 // Table data height
+  width: number = 0 // Table data width
+  dataHeight: number = 0 // The actual height of the table data
+  dataWidth: number = 0 // The actual width of the table data
 
   sizeCalc() {
     this.dataHeight = this.header.height + this.source.length * this.style.rowHeight

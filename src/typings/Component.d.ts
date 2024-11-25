@@ -12,7 +12,7 @@ export declare module IComponent {
     onClick?: (...any) => void
     onDoubleClick?: (...any) => void
     onContextMenu?: (...any) => void
-    onMouseEnter?: (...any) => void // 鼠标移入行
+    onMouseEnter?: (...any) => void // Mouse over row
     onMouseLeave?: (...any) => void
   }
 

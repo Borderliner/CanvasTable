@@ -56,13 +56,13 @@ export class BodySection extends Component {
     //   this.rows.forEach(row => {
     //     keyRow[getKey(row.data)] = row
     //   });
-    //   // 相同的直接替换
+    //   // Same direct replacement
     //   Object.keys(keyObj).forEach(key => {
     //     if (keyRow && keyRow[key]) {
     //       keyObj[key] = keyRow[key]
     //     }
     //   });
-    //   // 查找不同的行
+    //   // Finding different rows
     //   return keySortArr.map((key, i) => {
     //     const obj = keyObj[key];
     //     if (obj instanceof BodyRow) {
@@ -83,7 +83,7 @@ export class BodySection extends Component {
   render(start = 0, renderLen = this.table.source.length) {
     // const dataLen = this.source.length;
     // const rowLen = this.body.rows.length;
-    // // 需要渲染的条数大于需要增加Row
+    // // The number of rows that need to be rendered is greater than the number of rows that need to be added
     // if (renderLen > rowLen) {
     //
     // }

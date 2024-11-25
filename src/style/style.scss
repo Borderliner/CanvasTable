@@ -34,7 +34,7 @@
       &::-webkit-scrollbar {
         cursor: pointer;
       }
-      /*滚动条里面小方块*/
+      /* Small square inside the scroll bar */
       &::-webkit-scrollbar-thumb {
         border-radius: 9px;
         background-color: rgba(127, 127, 127, 0.85);

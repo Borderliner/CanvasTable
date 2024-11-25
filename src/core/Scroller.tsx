@@ -34,11 +34,11 @@ export default class Scroller {
   scrollHeight = 0
 
   /**
-   * 更新滚动的一些属性
-   * @param left - 显示宽度
-   * @param top  - 显示高度
-   * @param dataWidth - 真实宽度
-   * @param dataHeight - 真实高度
+   * Update some scroll properties
+   * @param left - Display Width
+   * @param top  - Display Altitude
+   * @param dataWidth - True Width
+   * @param dataHeight - True height
    */
   update(left: number, top: number, dataWidth: number, dataHeight: number) {
     this.scrollWidth = left

@@ -43,10 +43,10 @@ export declare module ICanvasTable {
   }
 
   // interface ITableEventCollection {
-  //   onClick?: (record, rowIndex) => void, // 点击行
+  //   onClick?: (record, rowIndex) => void, // Click on the line
   //   onDoubleClick?: (record, rowIndex) => void,
   //   onContextMenu?: (record, rowIndex) => void,
-  //   onMouseEnter?: (record, rowIndex) => void, // 鼠标移入行
+  //   onMouseEnter?: (record, rowIndex) => void, // Mouse over row
   //   onMouseLeave?: (record, rowIndex) => void,
   // }
 
