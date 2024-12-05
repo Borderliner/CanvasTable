@@ -10,7 +10,7 @@ type IColumn = ICanvasTable.IColumn
 type ITableHeaderProps = ICanvasTable.ITableHeaderProps
 
 export class HeaderTree extends Component {
-  constructor(private props: ITableHeaderProps) {
+  constructor(public props: ITableHeaderProps) {
     super()
     const columnsProps = columnsPropsRearrange(props.colProps)
     this.columnsInit(columnsProps)

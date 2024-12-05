@@ -25,6 +25,7 @@ class CanvasTable {
   static Layer = Layer
   static Text = Text
   static Svg = Svg
+  sortOrder?: 'asc' | 'desc'
 
   style: ITableStyle = null
 

@@ -89,7 +89,7 @@ export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: n
 
   // Circle for the forbidden sign
   ctx.beginPath()
-  ctx.arc(centerX, centerY, originW / 4, 0.85, 2 * Math.PI + 0.85, false) // (centerX, centerY, radius, startAngle, endAngle)
+  ctx.arc(centerX, centerY, originW / 4, 2.2, 2 * Math.PI + 2.2, false) // (centerX, centerY, radius, startAngle, endAngle)
   ctx.strokeStyle = '#919191' // Dark grey color for the stroke
   ctx.lineWidth = 8
   ctx.stroke()
@@ -97,8 +97,8 @@ export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   // Diagonal line (from top-left to bottom-right)
   ctx.beginPath()
   ctx.strokeStyle = '#575757'
-  ctx.moveTo(centerX - originW / 4.8, centerY - originH / 4.8) // Start point
-  ctx.lineTo(centerX + originW / 4.8, centerY + originH / 4.8) // End point
+  ctx.moveTo(centerX + originW / 4.8, centerY - originH / 4.8) // Start point
+  ctx.lineTo(centerX - originW / 4.8, centerY + originH / 4.8) // End point
   ctx.stroke()
 
   /* ctx.strokeStyle = '#1d1d1f'
