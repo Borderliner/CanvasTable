@@ -17,15 +17,15 @@ export const DEFAULT_STYLE: ITableStyleProps = {
 }
 
 export const PIXEL_RATIO = (() => {
-    const ctx = document.createElement('canvas').getContext('2d') ?? {} as any
+    const ctx = document.createElement('canvas').getContext('2d') ?? ({} as any)
     const dpr = window.devicePixelRatio || 1
     const bsr =
-            ctx['webkitBackingStorePixelRatio'] ||
-            ctx['mozBackingStorePixelRatio'] ||
-            ctx['msBackingStorePixelRatio'] ||
-            ctx['oBackingStorePixelRatio'] ||
-            ctx['backingStorePixelRatio'] ||
-            1
+        ctx['webkitBackingStorePixelRatio'] ||
+        ctx['mozBackingStorePixelRatio'] ||
+        ctx['msBackingStorePixelRatio'] ||
+        ctx['oBackingStorePixelRatio'] ||
+        ctx['backingStorePixelRatio'] ||
+        1
 
     const ratio = dpr / bsr
     return ratio < 1 ? 1 : ratio

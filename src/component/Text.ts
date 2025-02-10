@@ -6,23 +6,23 @@ import { toBlank } from '../utils/utils'
 type ILayerTextProps = IComponent.ILayerTextProps
 
 export default class LayerText extends Layer {
-  constructor(protected props: ILayerTextProps) {
-    super(props)
-  }
-
-  get text() {
-    return toBlank(this.props.text)
-  }
-
-  protected _textEllipsis = ''
-  get textEllipsis() {
-    if (!this._textEllipsis) {
-      this._textEllipsis = text2Ellipsis(this.ctx, this.text, this.innerWidth)
+    constructor(protected props: ILayerTextProps) {
+        super(props)
     }
-    return this._textEllipsis
-  }
 
-  render(text = this.textEllipsis) {
-    this.drawText(text)
-  }
+    get text() {
+        return toBlank(this.props.text)
+    }
+
+    protected _textEllipsis = ''
+    get textEllipsis() {
+        if (!this._textEllipsis) {
+            this._textEllipsis = text2Ellipsis(this.ctx, this.text, this.innerWidth)
+        }
+        return this._textEllipsis
+    }
+
+    render(text = this.textEllipsis) {
+        this.drawText(text)
+    }
 }

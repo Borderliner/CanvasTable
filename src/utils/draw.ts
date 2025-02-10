@@ -1,107 +1,115 @@
 export const drawLine = (
-  ctx: CanvasRenderingContext2D,
-  startX: number,
-  startY: number,
-  endX: number,
-  endY: number,
-  color?: string
+    ctx: CanvasRenderingContext2D,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    color?: string
 ) => {
-  if (color) {
-    ctx.save()
-    ctx.strokeStyle = color
-  }
-  ctx.beginPath()
-  ctx.moveTo(startX + 0.5, startY + 0.5)
-  ctx.lineTo(endX + 0.5, endY + 0.5)
-  ctx.closePath()
-  ctx.stroke()
+    if (color) {
+        ctx.save()
+        ctx.strokeStyle = color
+    }
+    ctx.beginPath()
+    ctx.moveTo(startX + 0.5, startY + 0.5)
+    ctx.lineTo(endX + 0.5, endY + 0.5)
+    ctx.closePath()
+    ctx.stroke()
 
-  if (color) {
-    ctx.restore()
-  }
+    if (color) {
+        ctx.restore()
+    }
 }
 
 export const drawRect = (
-  ctx: CanvasRenderingContext2D,
-  startX: number,
-  startY: number,
-  width: number,
-  height: number,
-  color?: string
+    ctx: CanvasRenderingContext2D,
+    startX: number,
+    startY: number,
+    width: number,
+    height: number,
+    color?: string
 ) => {
-  if (color) {
-    ctx.save()
-    ctx.fillStyle = color
-  }
-  ctx.fillRect(startX, startY, width, height)
+    if (color) {
+        ctx.save()
+        ctx.fillStyle = color
+    }
+    ctx.fillRect(startX, startY, width, height)
 
-  if (color) {
-    ctx.restore()
-  }
+    if (color) {
+        ctx.restore()
+    }
 }
 
 export const text2Ellipsis = (ctx: CanvasRenderingContext2D, str: string, maxWidth: number, ellipsis = '…') => {
-  if (typeof str !== 'string') {
-    return str
-  }
-  const len = str.length
-  if (len === 0) {
-    return str
-  }
-
-  let ellipsisWidth = ctx.measureText(ellipsis).width
-  let maxStr = ''
-  let maxStrWidth = 0
-  let i = 0
-  do {
-    i++
-    maxStr = str.substring(0, i)
-    maxStrWidth = ctx.measureText(maxStr).width
-  } while (maxStrWidth < maxWidth && i < len)
-
-  if (i === len && (maxStrWidth <= maxWidth || maxStrWidth <= ellipsisWidth)) {
-    return maxStr
-  } else {
-    while (maxStrWidth + ellipsisWidth >= maxWidth && i > 0) {
-      maxStr = maxStr.substring(0, i)
-      maxStrWidth = ctx.measureText(maxStr).width
-      i--
+    if (typeof str !== 'string') {
+        return str
     }
-    return maxStr.substring(0, i) + ellipsis
-  }
+    const len = str.length
+    if (len === 0) {
+        return str
+    }
+
+    let ellipsisWidth = ctx.measureText(ellipsis).width
+    let maxStr = ''
+    let maxStrWidth = 0
+    let i = 0
+    do {
+        i++
+        maxStr = str.substring(0, i)
+        maxStrWidth = ctx.measureText(maxStr).width
+    } while (maxStrWidth < maxWidth && i < len)
+
+    if (i === len && (maxStrWidth <= maxWidth || maxStrWidth <= ellipsisWidth)) {
+        return maxStr
+    } else {
+        while (maxStrWidth + ellipsisWidth >= maxWidth && i > 0) {
+            maxStr = maxStr.substring(0, i)
+            maxStrWidth = ctx.measureText(maxStr).width
+            i--
+        }
+        return maxStr.substring(0, i) + ellipsis
+    }
 }
 
-export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, originW = 140, textColor: string) => {
-  ctx.clearRect(0, y, w, h)
-  ctx.fillStyle = '#ffffff'
-  ctx.fillRect(0, y, w, h)
-  ctx.fillStyle = textColor
+export const drawNoData = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    originW = 140,
+    textColor: string
+) => {
+    ctx.clearRect(0, y, w, h)
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, y, w, h)
+    ctx.fillStyle = textColor
 
-  let originH = originW + originW * 0.4
-  let centerX = x + w / 2
-  let centerY = y + h / 2 - (originH - originW)
-  ctx.save()
+    let originH = originW + originW * 0.4
+    let centerX = x + w / 2
+    let centerY = y + h / 2 - (originH - originW)
+    ctx.save()
 
-  /* ctx.fillStyle = '#ebebeb'
+    /* ctx.fillStyle = '#ebebeb'
   ctx.beginPath()
   ctx.arc(centerX, centerY, originW / 2, 0, Math.PI * 2, false)
   ctx.fill() */
 
-  // Circle for the forbidden sign
-  ctx.beginPath()
-  ctx.arc(centerX, centerY, originW / 4, 2.2, 2 * Math.PI + 2.2, false) // (centerX, centerY, radius, startAngle, endAngle)
-  ctx.strokeStyle = '#919191' // Dark grey color for the stroke
-  ctx.lineWidth = 8
-  ctx.stroke()
+    // Circle for the forbidden sign
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, originW / 4, 2.2, 2 * Math.PI + 2.2, false) // (centerX, centerY, radius, startAngle, endAngle)
+    ctx.strokeStyle = '#919191' // Dark grey color for the stroke
+    ctx.lineWidth = 8
+    ctx.stroke()
 
-  // Diagonal line (from top-left to bottom-right)
-  ctx.beginPath()
-  ctx.strokeStyle = '#575757'
-  ctx.moveTo(centerX + originW / 4.8, centerY - originH / 4.8) // Start point
-  ctx.lineTo(centerX - originW / 4.8, centerY + originH / 4.8) // End point
-  ctx.stroke()
+    // Diagonal line (from top-left to bottom-right)
+    ctx.beginPath()
+    ctx.strokeStyle = '#575757'
+    ctx.moveTo(centerX + originW / 4.8, centerY - originH / 4.8) // Start point
+    ctx.lineTo(centerX - originW / 4.8, centerY + originH / 4.8) // End point
+    ctx.stroke()
 
-  /* ctx.strokeStyle = '#1d1d1f'
+    /* ctx.strokeStyle = '#1d1d1f'
   ctx.lineWidth = originW / 20
   ctx.beginPath()
   let rectWidth = originW / 3
@@ -145,15 +153,15 @@ export const noData = (ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   ctx.stroke()
   ctx.restore() */
 
-  let fontSize = originW * 0.17
-  ctx.fillStyle = '#1d1d1d'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.font =
-    fontSize +
-    'px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
-  ctx.fillText('No Data', centerX, centerY + originW / 3 + (originH - originW) / 3)
-  ctx.restore()
+    let fontSize = originW * 0.17
+    ctx.fillStyle = '#1d1d1d'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.font =
+        fontSize +
+        'px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
+    ctx.fillText('No Data', centerX, centerY + originW / 3 + (originH - originW) / 3)
+    ctx.restore()
 }
 
 // export const drawSvg = (
