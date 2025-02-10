@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pnpm build:dist
-pnpm build:umd
+# pnpm build:dev
+pnpm build:lib
 pnpm publish

@@ -13,7 +13,7 @@ insert_final_newline = true
 [*.{js,ts,tsx}]
 charset = utf-8
 indent_style = space
-indent_size = 2
+indent_size = 4
 quote_type = single
 tab_width = 120
 trim_trailing_whitespace = true

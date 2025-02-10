@@ -1,24 +1,30 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es6", "es5", "es2016.array.include", "es2015.promise", "es2017.object", "es2020"],
-    "target": "ESNext",
-    "sourceMap": true,
-    "jsx": "react",
-    "outDir": "./dist", 
-    "allowJs": true,
-    "declaration": true, 
-    "declarationDir": "./dist" ,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "noEmitHelpers": true,
-    "allowSyntheticDefaultImports": true,
-    "jsxFactory": "h",
-    "typeRoots" : ["./src/typings"],
+    "lib": ["dom", "es6", "es2015", "es2016", "es2017", "es2020"], // Simplified lib array
+    "target": "ESNext", // Target the latest ECMAScript version
+    "module": "ESNext", // Use ESM modules
+    "sourceMap": true, // Generate source maps
+    "jsx": "preserve", // Use React JSX
+    "outDir": "dist", // Output directory for compiled files
+    "allowJs": true, // Allow JavaScript files
+    "declaration": true, // Generate .d.ts files
+    "declarationDir": "dist/types", // Output directory for .d.ts files
+    "moduleResolution": "node", // Use Node.js module resolution
+    "esModuleInterop": true, // Enable ES module interop
+    "allowSyntheticDefaultImports": true, // Allow synthetic default imports
+    "strict": false, // Enable all strict type-checking options
+    "skipLibCheck": true, // Skip type-checking of declaration files
+    "baseUrl": ".", // Base directory for path resolution
+    "paths": {
+      "@/*": ["./src/*"] // Optional: Set up path aliases
+    },
+    "typeRoots": ["./src/typings", "./node_modules/@types"] // Include custom typings and node_modules/@types
   },
   "exclude": [
-    "node_modules"
+    "node_modules", // Exclude node_modules
+    "dist" // Exclude the output directory
   ],
   "include": [
-    "./src/**/*",
+    "./src/**/*" // Include all files in the src directory
   ]
 }
